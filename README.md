@@ -1,13 +1,13 @@
-# ETA: An Open-Source NAS Framework for Early-Exit CNNs on Edge RISC-V Accelerator
+# ETAS: An Open-Source NAS Framework for Early-Exit CNNs on Edge RISC-V Accelerator
 
-ETA is an open-source framework for hardware-aware neural architecture search (NAS) and deployment
+ETAS is an open-source framework for hardware-aware neural architecture search (NAS) and deployment
 of quantized early-exit (EE) CNNs on
 [ZTA-Q](https://github.com/kevinli-hw/ZTA-Q/tree/feature/ZTA-Q), a RISC-V-based SIMD accelerator
-built on [ztachip](https://github.com/ztachip/ztachip). ETA turns TFLite models into sequential
+built on [ztachip](https://github.com/ztachip/ztachip). ETAS turns TFLite models into sequential
 execution stages with runtime exit decisions. It jointly optimizes exit placement, confidence
 thresholds and exit-head architectures, using latency profiled on the FPGA.
 
-ETA was evaluated with five CNNs on a Digilent Arty A7-100T FPGA at 83.3 MHz. It reaches up to
+ETAS was evaluated with five CNNs on a Digilent Arty A7-100T FPGA at 83.3 MHz. It reaches up to
 **5.94×** inference speedup over the static baseline on CIFAR-10 and up to **3.03×** on CIFAR-100,
 with minor accuracy degradation.
 
@@ -28,7 +28,7 @@ with minor accuracy degradation.
 
 The operator list exported by TFLite places the exit heads and the final classifier after all
 backbone operators. That order preserves the data dependencies, but it prevents early termination
-when the operators run one after another. ETA reorders the list so that each exit head directly
+when the operators run one after another. ETAS reorders the list so that each exit head directly
 follows its backbone stage. The host can then decide to exit before the next backbone operator is
 dispatched.
 
@@ -77,7 +77,7 @@ On ZTA-Q the MAC count does not track latency:
 
 ### Latency model
 
-ETA replaces $`M(S_i)`$ and $`M(E_i)`$ with measured latencies $`T(S_i)`$ and $`T(E_i)`$. The latency of
+ETAS replaces $`M(S_i)`$ and $`M(E_i)`$ with measured latencies $`T(S_i)`$ and $`T(E_i)`$. The latency of
 each backbone segment is the sum of its measured operator times. For an exit head of type $`\tau`$
 at a tap of resolution $`R`$, the latency grows linearly with the head's MACs:
 
@@ -138,13 +138,13 @@ Setup:
 Each cell gives top-1 accuracy (%), mean latency (ms) and speedup over the baseline. The latency
 includes the host preprocessing. The columns are:
 
-- **ETA NAS**: the configuration found by the latency-scored search, with float preprocessing and
+- **ETAS NAS**: the configuration found by the latency-scored search, with float preprocessing and
   softmax exit decisions.
-- **ETA E2E**: the same configuration with integer preprocessing and score-margin exit decisions.
+- **ETAS E2E**: the same configuration with integer preprocessing and score-margin exit decisions.
 
 **CIFAR-10**
 
-| Model       | Baseline       | ETA NAS               | ETA E2E               |
+| Model       | Baseline       | ETAS NAS              | ETAS E2E              |
 | ----------- | -------------- | --------------------- | --------------------- |
 | SqueezeNet  | 91.87 / 76.1   | 90.66 / 63.9 / 1.19×  | 90.52 / 26.2 / 2.90×  |
 | MobileNetV1 | 92.67 / 98.6   | 91.55 / 54.9 / 1.80×  | 91.08 / 17.1 / 5.77×  |
@@ -154,7 +154,7 @@ includes the host preprocessing. The columns are:
 
 **CIFAR-100**
 
-| Model       | Baseline       | ETA NAS               | ETA E2E               |
+| Model       | Baseline       | ETAS NAS              | ETAS E2E              |
 | ----------- | -------------- | --------------------- | --------------------- |
 | SqueezeNet  | 67.38 / 77.5   | 66.63 / 75.8 / 1.02×  | 65.93 / 32.1 / 2.41×  |
 | MobileNetV1 | 70.88 / 99.0   | 69.74 / 78.6 / 1.26×  | 69.68 / 35.6 / 2.78×  |
@@ -169,7 +169,7 @@ includes the host preprocessing. The columns are:
 
 ## Platform setup
 
-ETA runs on the ZTA-Q platform. The steps below build it for the Arty A7-100T.
+ETAS runs on the ZTA-Q platform. The steps below build it for the Arty A7-100T.
 
 ### 1. FPGA bitstream
 
